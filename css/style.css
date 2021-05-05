@@ -1,0 +1,26 @@
+.badge-light {
+    cursor: pointer;
+}
+
+.smallBtn {
+    width: 49%;
+}
+
+h2,
+.jumbotron {
+    text-align: center;
+}
+
+.backToHome {
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.backToHome span {
+    padding: px;
+}
+
+h2 {
+    margin-bottom: 40px;
+}
