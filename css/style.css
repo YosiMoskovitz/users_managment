@@ -1,9 +1,11 @@
 .badge-light {
     cursor: pointer;
+    width: 100%;
 }
 
 .smallBtn {
     width: 49%;
+    padding: 5px;
 }
 
 h2,
@@ -18,7 +20,7 @@ h2,
 }
 
 .backToHome span {
-    padding: px;
+    padding: 10px;
 }
 
 h2 {

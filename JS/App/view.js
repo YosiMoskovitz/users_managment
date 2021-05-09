@@ -17,8 +17,8 @@ function init() {
             <div class="col-sm" id="main">
                 <h2>Please Login</h2>
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" />
+                    <label for="uname">User name</label>
+                    <input type="text" class="form-control" id="uname" aria-describedby="emailHelp" />
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -27,7 +27,6 @@ function init() {
                 <button id="login" type="submit" class="btn btn-primary btn-block">Login</button>
                 <div style="margin-top: 10px">
                     <span id="forgot" class="badge badge-light smallBtn">Forgot Your Password?</span>
-                    <span id="register"class="badge badge-light smallBtn">Not Registered Yet?</span>
                 </div>
             </div>
 
@@ -37,6 +36,8 @@ function init() {
   `
    main = document.getElementById("main");
 }
+
+/* //this is a func for registerig  
 
 function registerView() {
     main = document.getElementById("main");
@@ -66,6 +67,7 @@ function registerView() {
     </div>
 `;
 }
+*/
 
 function loginView() {
     
@@ -74,7 +76,7 @@ function loginView() {
   <h2>Please Login</h2>
   <div class="form-group">
       <label for="email">Email address</label>
-      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" />
+      <input type="text" class="form-control" id="uname" aria-describedby="emailHelp" />
   </div>
   <div class="form-group">
       <label for="password">Password</label>
@@ -82,8 +84,7 @@ function loginView() {
   </div>
   <button type="submit" class="btn btn-primary btn-block">Login</button>
   <div style="margin-top: 10px">
-      <span id="forgot" class="badge badge-light smallBtn">Forgot Your Password?</span>
-      <span id="loginBtn" class="badge badge-light">Not Registered Yet?</span>
+      <span id="forgot" class="badge badge-light">Forgot Your Password?</span>
   </div>
 </div>
   `;
@@ -94,8 +95,8 @@ function passwordView() {
     <div class="col-sm" id="main">
     <h2>Password Reset</h2>
     <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" />
+        <label for="email">User name</label>
+        <input type="text" class="form-control" id="uname" aria-describedby="emailHelp" />
     </div>
     <button type="submit" class="btn btn-primary btn-block">Reset</button>
     <div class="backToHome">
@@ -106,24 +107,27 @@ function passwordView() {
 
 function createUserCard(data) {
     var html = `
-              <h1>Welcome, ${data.first_name}</h1>
+              <h1>Welcome, ${data.fname} " " ${data.lname}!</h1>
               <div class="card" style="width: 18rem">
                 <img
                   class="card-img-top"
-                  src="${data.image}"
+                  src="${data.img}"
                   alt="Card image cap"
                 />
                 <div class="card-body">
-                  <h5 class="card-title">${data.first_name} ${data.last_name}</h5>
-                  <p class="card-text">${data.email}</p>
+                  <h5 class="card-title">${data.fname} ${data.lname}</h5>
+                  <p class="card-text">${data.uname}</p>
                   <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" value="${data.password}" class="form-control" id="newPassword" />
+                    <input type="password" value="${data.pass}" class="form-control" id="newPassword" />
                   </div>
                   <button class="btn btn-primary">Edit Password</button>
                 </div>
               </div>`;
     main.innerHTML = html;
 }
+function myalert(res){
+    alert(res);
+}
 
-export {init, registerView, loginView, passwordView, createUserCard};
+export {init, loginView, passwordView, createUserCard, myalert};
