@@ -27,6 +27,7 @@ function init() {
                 <button id="login" type="submit" class="btn btn-primary btn-block">Login</button>
                 <div style="margin-top: 10px">
                     <span id="forgot" class="badge badge-light smallBtn">Forgot Your Password?</span>
+                    <span id="register" class="badge badge-light smallBtn">Register</span>
                 </div>
             </div>
 
@@ -37,37 +38,43 @@ function init() {
    main = document.getElementById("main");
 }
 
-/* //this is a func for registerig  
+/* //this is a func for registerig */ 
 
 function registerView() {
     main = document.getElementById("main");
     main.innerHTML = `
-                       <h2>Please Register</h2>
-    <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp" />
-    </div>
-    <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input type="text" class="form-control" id="lastName" aria-describedby="emailHelp" />
-    </div>
-    <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" />
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" />
-    </div>
-    <button type="submit" class="btn btn-primary btn-block">
-        Register
-    </button>
-    <div style="margin-top: 10px; text-align: center">
-        <span id="loginBtn" class="badge badge-light">Already Have an Account?</span>
-    </div>
+    <form id="register" method="post">
+             <h2>Please Register</h2>
+        <div class="form-group">
+            <label for="username">User name</label>
+            <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="uname"/>
+        </div>
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp" name="fname" />
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" aria-describedby="emailHelp" name="lname" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="pass" />
+        </div>
+        <div class="form-group">
+            <label for="lastName">Profile Picture</label>
+            <input type="file" class="form-control" id="image" aria-describedby="emailHelp" name="img" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+            Register
+        </button>
+        <div style="margin-top: 10px; text-align: center">
+            <span id="loginBtn" class="badge badge-light">Already Have an Account?</span>
+        </div>
+    </form>
 `;
 }
-*/
+/**/
 
 function loginView() {
     
@@ -126,8 +133,17 @@ function createUserCard(data) {
               </div>`;
     main.innerHTML = html;
 }
+function userView(userdetails) {
+    var html = `
+              <h1>Welcome, ${userdetails.fname} " " ${userdetails.lname}!</h1>
+              <div class="card" style="width: 18rem">
+                  <button class="btn btn-primary">Edit Password</button>
+                </div>
+              </div>`;
+    main.innerHTML = html;
+}
 function myalert(res){
     alert(res);
 }
 
-export {init, loginView, passwordView, createUserCard, myalert};
+export {init, loginView, passwordView, createUserCard, myalert, registerView, userView};

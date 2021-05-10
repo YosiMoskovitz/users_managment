@@ -3,8 +3,9 @@ import * as View from "./view.js";
 
 function init() {
     View.init();
-    document.getElementById("login").addEventListener("click", login);
-    document.getElementById("forgot").addEventListener("click", resetPass);
+    $("#login").click(login);
+    $("#forgot").click(resetPass);
+    $("#register").click(registration);
 }
 
 async function login() {
@@ -25,10 +26,26 @@ function resetPass() {
     View.passwordView();
     document.getElementById("loginBtn").addEventListener("click", init);
 }
-function register() {
+
+
+function registration() {
     View.registerView();
     document.getElementById("loginBtn").addEventListener("click", init);
+    document.getElementById("register").addEventListener("submit", async function (e){
+        e.preventDefault();
+        var res = await Model.createAccount(this);
+        console.log(res)
+       if (res.success) {
+           View.userView(res)
+       }
+        else{
+            console.log("somthing happend!")
+        }
+    });
+}
 
+async function register(){
+    
 }
 
 
