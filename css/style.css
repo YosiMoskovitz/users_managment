@@ -26,3 +26,12 @@ h2,
 h2 {
     margin-bottom: 40px;
 }
+#emailInfo{
+    font-size: 0.8em;
+    opacity: 80%;
+    margin: 2px 0px 8px 0px;;
+}
+#errormsg{
+    color: red;
+    margin-top: 10px;
+}

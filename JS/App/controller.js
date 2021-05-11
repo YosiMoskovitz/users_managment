@@ -5,7 +5,7 @@ function init() {
     View.init();
     $("#login").click(login);
     $("#forgot").click(resetPass);
-    $("#register").click(registration);
+    $("#register").click(register);
 }
 
 async function login() {
@@ -13,12 +13,12 @@ async function login() {
     var password = document.getElementById("password");
     var res = await Model.login(user_name.value, password.value);
     if (!res) {
-        View.myalert(res);
+        View.ErrorMessages(res);
         email.value = "";
         password.value = "";
     }
     else{
-        View.createUserCard(res);
+        View.userView(res);
     }
 }
 
@@ -28,25 +28,34 @@ function resetPass() {
 }
 
 
-function registration() {
+function register() {
     View.registerView();
     document.getElementById("loginBtn").addEventListener("click", init);
     document.getElementById("register").addEventListener("submit", async function (e){
         e.preventDefault();
         var res = await Model.createAccount(this);
-        console.log(res)
        if (res.success) {
            View.userView(res)
        }
         else{
-            console.log("somthing happend!")
+            View.ErrorMessages(res.message);
+            $("input").change(()=>{
+                $("#errormsg").remove()
+            })
         }
+    });
+    $("#email").change(async function () {
+        var result = await Model.isEmailFree(this.value);
+        var emailInputObj = {bool: false, input: this, message:"Email alerdy exist."}
+        if (result) {
+            emailInputObj.bool = true;
+            emailInputObj.message = "Email not in use."
+        }
+        View.emailVeri(emailInputObj);
     });
 }
 
-async function register(){
-    
-}
+
 
 
 

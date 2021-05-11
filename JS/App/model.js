@@ -12,7 +12,8 @@ async function login(uname, pass) {
         if (Table.length == 1) {
             return Table[0];
         } else {
-            return "WORNG!";
+            let result = false
+            return result;
         }
     } catch (e) {
         console.log(e);
@@ -30,30 +31,44 @@ async function createAccount(form) {
     for (const item of formData.entries()) {
         formObj[item[0]] = item[1];
     }
-    var jsonObj = JSON.stringify(formObj)
-    console.log(jsonObj)
-    result.fname = formObj.fname;
-    result.lname = formObj.lname;
-
-    var settings = {
-        method: "POST",
-        url: "https://webschoolfirstdb-47c819.appdrag.site/api/createUser",
-        data: formObj,
-        processData: false,
-        contentType: false,
+    var emptyInputCheck = Object.keys(formObj).some((key) =>{
+        return formObj[key] === "";
+    });
+    if (!emptyInputCheck) {
+        result.fname = formObj.fname;
+        result.lname = formObj.lname;
+    
+        var settings = {
+            method: "POST",
+            url: "https://webschoolfirstdb-47c819.appdrag.site/api/createUser",
+            data: formObj,
+        }
+        await $.ajax(settings).done((res) => {
+            //var response = JSON.parse(res);
+            if (res.status = "OK" && res.affectedRows > 0) {
+                result.success = true;
+            }
+        })
+        .fail((res) => {
+            console.log(res);
+            result = res
+        });
     }
-    console.log(settings)
-    await $.ajax(settings).done((res => {
-        var response = JSON.parse(res);
-        if (response.status = "OK" && response.affectedRows > 0) {
-            result.success = true;
-        };
-        return result;
+    else{
+        result.message = "Some of the filed are empty! Please try again."
+    }
+    return result;  
+}
 
-    })).fail((res => {
-        console.log(res);
-        return res
-    }))
+async function isEmailFree(email) {
+    var result = false;
+    await $.get(`https://webschoolfirstdb-47c819.appdrag.site/api/getUserByEmail?email=${email}`)
+    .done(res =>{
+        if (res.Table.length == 0) {
+            result = true;
+        }
+    })
+    return result;
 }
 
 
@@ -61,4 +76,4 @@ async function createAccount(form) {
 //.then
 //async - await*/
 
-export { login, createAccount };
+export { login, createAccount, isEmailFree};

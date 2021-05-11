@@ -3,7 +3,7 @@ var start = document.getElementById("start");
 var main = null;
 
 function init() {
- start.innerHTML = `
+    start.innerHTML = `
   <div class="container">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
@@ -35,10 +35,10 @@ function init() {
         </div>
     </div>
   `
-   main = document.getElementById("main");
+    main = document.getElementById("main");
 }
 
-/* //this is a func for registerig */ 
+/* //this is a func for registerig */
 
 function registerView() {
     main = document.getElementById("main");
@@ -47,23 +47,23 @@ function registerView() {
              <h2>Please Register</h2>
         <div class="form-group">
             <label for="username">User name</label>
-            <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="uname"/>
+            <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="uname"  />
         </div>
         <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp" name="fname" />
+            <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp" name="fname"  />
         </div>
         <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" aria-describedby="emailHelp" name="lname" />
+            <input type="text" class="form-control" id="lastName" aria-describedby="emailHelp" name="lname"  />
         </div>
+        <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" >
+        <div id="emailInfo" class="form-text"></div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="pass" />
-        </div>
-        <div class="form-group">
-            <label for="lastName">Profile Picture</label>
-            <input type="file" class="form-control" id="image" aria-describedby="emailHelp" name="img" />
+            <input type="password" class="form-control" id="password" name="pass"  />
         </div>
         <button type="submit" class="btn btn-primary btn-block">
             Register
@@ -77,7 +77,7 @@ function registerView() {
 /**/
 
 function loginView() {
-    
+
     main.innerHTML = `
     <div class="col-sm" id="main">
   <h2>Please Login</h2>
@@ -111,7 +111,7 @@ function passwordView() {
     </div>
 </div>`;
 }
-
+/*there is a diffrent func for that now
 function createUserCard(data) {
     var html = `
               <h1>Welcome, ${data.fname} " " ${data.lname}!</h1>
@@ -133,17 +133,31 @@ function createUserCard(data) {
               </div>`;
     main.innerHTML = html;
 }
+*/
 function userView(userdetails) {
     var html = `
-              <h1>Welcome, ${userdetails.fname} " " ${userdetails.lname}!</h1>
+              <h1>Welcome!,</br> ${userdetails.fname}  ${userdetails.lname}.</h1>
               <div class="card" style="width: 18rem">
                   <button class="btn btn-primary">Edit Password</button>
                 </div>
               </div>`;
     main.innerHTML = html;
 }
-function myalert(res){
-    alert(res);
+
+function emailVeri(veriObj) {
+    $("#emailInfo").html(veriObj.message);
+    if (veriObj.bool){
+        veriObj.input.style.border = "2px green solid";
+    }
+    else{
+        veriObj.input.style.border = "2px red solid";
+        veriObj.input.value = "";
+    }
+}
+function ErrorMessages(message){
+    var errorDiv = `<div id="errormsg" class="form-text">${message}</div>`
+    $("#main").append(errorDiv);
 }
 
-export {init, loginView, passwordView, createUserCard, myalert, registerView, userView};
+
+export { init, loginView, passwordView, registerView, userView, emailVeri, ErrorMessages };
