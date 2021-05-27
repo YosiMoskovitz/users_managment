@@ -1,58 +1,89 @@
 import * as Model from "./model.js";
 import * as View from "./view.js";
+import * as PinCode from "../Sevrices/pincode.js";
 
 function init() {
     View.init();
     $("#login").click(login);
-    $("#forgot").click(resetPass);
+
+    $("#forgot").click(() => {
+        View.passwordView();
+        $("#loginBtn").click(init);
+    });
+
     $("#register").click(register);
 }
 
-async function login() {
+function login() {
     var user_name = document.getElementById("uname");
-    var password = document.getElementById("password");
-    var res = await Model.login(user_name.value, password.value);
-    if (!res) {
-        View.ErrorMessages(res);
-        email.value = "";
-        password.value = "";
-    }
-    else{
-        View.userView(res);
-    }
-}
-
-function resetPass() {
-    View.passwordView();
-    document.getElementById("loginBtn").addEventListener("click", init);
+    View.pinCodeView();
+    PinCode.init(user_name.value).then(View.userView);
 }
 
 
 function register() {
     View.registerView();
-    document.getElementById("loginBtn").addEventListener("click", init);
-    document.getElementById("register").addEventListener("submit", async function (e){
+    $("#loginBtn").click(init);
+    $("#register").submit(async function (e) {
         e.preventDefault();
-        var res = await Model.createAccount(this);
-       if (res.success) {
-           View.userView(res)
-       }
+        //check if any input has a red border - wich means there is a problem with the input and should not continue.
+        var InputHelpers = document.querySelectorAll('input');
+        var checkInput =  Object.keys(InputHelpers).some((input) =>{
+            return InputHelpers[input].style.border === "2px solid red";
+        });
+        //creating the account with the model func.
+        if (!checkInput) {
+            var res = await Model.createAccount(this);
+            if (res.success) {
+                View.userView(res)
+            }
+            else {
+                View.ErrorMessages(res.message);
+                $("input").change(() => {
+                    $("#errormsg").remove();
+                })
+            }
+        }
         else{
-            View.ErrorMessages(res.message);
-            $("input").change(()=>{
-                $("#errormsg").remove()
+            View.ErrorMessages("Something is WRONG.");
+            $("input").change(() => {
+                $("#errormsg").remove();
             })
         }
+
+        
     });
-    $("#email").change(async function () {
-        var result = await Model.isEmailFree(this.value);
-        var emailInputObj = {bool: false, input: this, message:"Email alerdy exist."}
-        if (result) {
-            emailInputObj.bool = true;
-            emailInputObj.message = "Email not in use."
+    $(".toCheck").change(async function () {
+        var InputObj = { bool: false, input: this, type: this.id }
+        if (this.id == "email") {
+            InputObj.message = infoMessages.emailmessages.emailInUse;
         }
-        View.emailVeri(emailInputObj);
+        else InputObj.message = infoMessages.usernamemessages.usernameInUse;
+        var result = await Model.existingUserCheck(this.id, this.value);
+        if (result) {
+            InputObj.bool = true;
+            if (this.id == "email") {
+                InputObj.message = infoMessages.emailmessages.emailNOTInUse;
+            }
+            else InputObj.message = infoMessages.usernamemessages.usernameNOTInUse;
+        }
+
+        View.userVeri(InputObj);
+        //if email exist listen for login click on email Helper
+        $("#loginBtn").click(init);
     });
+}
+
+var infoMessages = {
+    emailmessages: {
+        emailInUse: `Email address linked to an existin account. want to <span id="loginBtn" style="cursor: pointer"><u>Login</u></span>?`,
+        emailNOTInUse: "Email not in use.",
+    },
+    usernamemessages: {
+
+        usernameInUse: "This user name is alerdy taken. Please try somthing else.",
+        usernameNOTInUse: "Looks Good."
+    }
 }
 
 

@@ -1,4 +1,4 @@
-async function login(uname, pass) {
+async function regularlogin(uname, pass) {
     try {
         let res = await fetch(`https://webschoolfirstdb-47c819.appdrag.site/api/login?uname=${uname}&pass=${pass}`);
 
@@ -18,9 +18,20 @@ async function login(uname, pass) {
     } catch (e) {
         console.log(e);
     }
+}
 
-
-
+async function login(uname, pass) {
+    var result = false;
+    await $.get(`https://webschoolfirstdb-47c819.appdrag.site/api/login?uname=${uname}&pass=${pass}`)
+        .done(res => {
+            if (res.Table.length == 1) {
+                result = res.Table[0];
+            }
+        })
+        .fail(res =>
+            result = res
+        )
+    return result;
 }
 
 async function createAccount(form) {
@@ -31,13 +42,13 @@ async function createAccount(form) {
     for (const item of formData.entries()) {
         formObj[item[0]] = item[1];
     }
-    var emptyInputCheck = Object.keys(formObj).some((key) =>{
+    var emptyInputCheck = Object.keys(formObj).some((key) => {
         return formObj[key] === "";
     });
     if (!emptyInputCheck) {
         result.fname = formObj.fname;
         result.lname = formObj.lname;
-    
+
         var settings = {
             method: "POST",
             url: "https://webschoolfirstdb-47c819.appdrag.site/api/createUser",
@@ -48,26 +59,33 @@ async function createAccount(form) {
             if (res.status = "OK" && res.affectedRows > 0) {
                 result.success = true;
             }
+            else {
+                result.success = false;
+                console.log(res)
+            }
         })
-        .fail((res) => {
-            console.log(res);
-            result = res
-        });
+            .fail((res) => {
+                console.log(res);
+                result = res
+            });
     }
-    else{
+    else {
         result.message = "Some of the filed are empty! Please try again."
     }
-    return result;  
+    return result;
 }
 
-async function isEmailFree(email) {
+async function existingUserCheck(type, user) {
     var result = false;
-    await $.get(`https://webschoolfirstdb-47c819.appdrag.site/api/getUserByEmail?email=${email}`)
-    .done(res =>{
-        if (res.Table.length == 0) {
-            result = true;
-        }
-    })
+    await $.get(`https://webschoolfirstdb-47c819.appdrag.site/api/getUserBy${type}?${type}=${user}`)
+        .done(res => {
+            if (res.Table.length == 0) {
+                result = true;
+            }
+        })
+        .fail(res =>
+            result = res
+        )
     return result;
 }
 
@@ -76,4 +94,4 @@ async function isEmailFree(email) {
 //.then
 //async - await*/
 
-export { login, createAccount, isEmailFree};
+export { regularlogin, createAccount, existingUserCheck, login };
